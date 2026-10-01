@@ -1,0 +1,9 @@
+<resources>
+    <color name="bas_green">#176B4D</color>
+    <color name="bas_green_dark">#0D4B35</color>
+    <color name="bas_bg">#F6F7F8</color>
+    <color name="bas_card">#FFFFFF</color>
+    <color name="bas_text">#17211C</color>
+    <color name="bas_muted">#66736D</color>
+    <color name="bas_danger">#B3261E</color>
+</resources>
