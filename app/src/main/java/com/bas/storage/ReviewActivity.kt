@@ -3,6 +3,7 @@ package com.bas.storage
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.PendingIntent
+import android.content.ContentUris
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -13,6 +14,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.Html
 import android.text.format.Formatter
@@ -427,29 +429,66 @@ class ReviewActivity : Activity() {
 
         val item = items[index]
 
-        if (item.path != null) {
-            val deleted = try { File(item.path).delete() } catch (_: Exception) { false }
+        // الأفضل: إذا كانت صلاحية All files access مفعلة نحذف الملف الحقيقي مباشرة.
+        // هذا يمنع نوافذ Android المتكررة ويحقق: حذف -> الملف التالي فورًا.
+        val directFile = directFileFor(item)
+        if (directFile != null && directFile.exists()) {
+            val deleted = try { directFile.delete() } catch (_: Exception) { false }
             if (deleted) {
                 onDeleted(item)
-            } else {
-                Toast.makeText(this, "تعذر حذف الملف", Toast.LENGTH_LONG).show()
+                return
             }
-            return
         }
 
         val uri = item.uri
         if (uri == null) {
-            Toast.makeText(this, "تعذر تحديد الملف للحذف", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "تعذر تحديد الملف. فعّل «وصول كامل للملفات» ثم أعد فحص الجهاز.",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
 
         if (Build.VERSION.SDK_INT >= 30) {
-            try {
-                pendingDelete = item
-                val request: PendingIntent = MediaStore.createDeleteRequest(contentResolver, listOf(uri))
-                startIntentSenderForResult(request.intentSender, 901, null, 0, 0, 0)
-            } catch (e: Exception) {
-                Toast.makeText(this, "تعذر طلب حذف الملف: ${e.message ?: ""}", Toast.LENGTH_LONG).show()
+            val mediaUri = typedMediaUri(item, uri)
+            if (mediaUri != null) {
+                try {
+                    pendingDelete = item
+                    val request: PendingIntent =
+                        MediaStore.createDeleteRequest(contentResolver, listOf(mediaUri))
+                    startIntentSenderForResult(request.intentSender, 901, null, 0, 0, 0)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this,
+                        "تعذر طلب حذف الملف: ${e.message ?: ""}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } else {
+                try {
+                    if (contentResolver.delete(uri, null, null) > 0) {
+                        onDeleted(item)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "هذا الملف يحتاج «وصول كامل للملفات» للحذف المباشر.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } catch (_: SecurityException) {
+                    Toast.makeText(
+                        this,
+                        "فعّل «وصول كامل للملفات» ثم أعد الفحص لحذف هذا النوع مباشرة.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this,
+                        "تعذر حذف الملف: ${e.message ?: ""}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         } else {
             try {
@@ -461,6 +500,36 @@ class ReviewActivity : Activity() {
             } catch (e: Exception) {
                 Toast.makeText(this, "تعذر حذف الملف: ${e.message ?: ""}", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun directFileFor(item: StorageItem): File? {
+        item.path?.let { return File(it) }
+
+        if (Build.VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) {
+            val relative = item.relativePath.trimStart('/')
+            if (relative.isNotBlank()) {
+                return File(Environment.getExternalStorageDirectory(), relative + item.name)
+            }
+        }
+        return null
+    }
+
+    private fun typedMediaUri(item: StorageItem, original: Uri): Uri? {
+        val mime = item.mime ?: guessMime(item.name)
+        val id = try { ContentUris.parseId(original) } catch (_: Exception) { return null }
+
+        return when {
+            mime.startsWith("image/") ->
+                ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+
+            mime.startsWith("video/") ->
+                ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+
+            mime.startsWith("audio/") ->
+                ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id)
+
+            else -> null
         }
     }
 
