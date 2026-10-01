@@ -25,6 +25,10 @@
         </provider>
 
         <activity
+            android:name=".ReviewActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
