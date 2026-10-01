@@ -1,0 +1,55 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- rear folder / file layers -->
+    <path
+        android:fillColor="#18A678"
+        android:pathData="M24,28 L45,28 L51,34 L83,34 Q88,34 88,39 L88,70 Q88,75 83,75 L24,75 Q19,75 19,70 L19,33 Q19,28 24,28 Z" />
+    <path
+        android:fillColor="#EED06D"
+        android:pathData="M28,34 L49,34 L54,39 L80,39 Q84,39 84,43 L84,68 Q84,72 80,72 L28,72 Q24,72 24,68 L24,38 Q24,34 28,34 Z" />
+
+    <!-- front emerald folder -->
+    <path
+        android:fillColor="#075B46"
+        android:pathData="M18,43 L39,43 L45,49 L85,49 Q90,49 90,54 L88,80 Q87.5,85 82,85 L24,85 Q18,85 18,79 Z" />
+    <path
+        android:fillColor="#F6D66F"
+        android:fillAlpha="0.9"
+        android:pathData="M18,43 L39,43 L45,49 L85,49 Q90,49 90,54 L89,56 L45,54 L38,48 L18,48 Z" />
+
+    <!-- database stack -->
+    <path
+        android:fillColor="#F2CA5C"
+        android:pathData="M37,51 C37,46 45,43 55,43 C65,43 73,46 73,51 C73,56 65,59 55,59 C45,59 37,56 37,51 Z" />
+    <path
+        android:fillColor="#D6A938"
+        android:pathData="M37,51 L37,58 C37,63 45,66 55,66 C65,66 73,63 73,58 L73,51 C73,56 65,59 55,59 C45,59 37,56 37,51 Z" />
+    <path
+        android:fillColor="#F0C65A"
+        android:pathData="M37,59 L37,66 C37,71 45,74 55,74 C65,74 73,71 73,66 L73,59 C73,64 65,67 55,67 C45,67 37,64 37,59 Z" />
+    <path
+        android:fillColor="#C99B2E"
+        android:pathData="M37,67 L37,74 C37,79 45,82 55,82 C65,82 73,79 73,74 L73,67 C73,72 65,75 55,75 C45,75 37,72 37,67 Z" />
+
+    <!-- green top sheen -->
+    <path
+        android:fillColor="#0B7C5D"
+        android:pathData="M40,50 C42,47 48,46 55,46 C62,46 68,47 70,50 C67,52.5 62,54 55,54 C48,54 43,52.5 40,50 Z" />
+
+    <!-- orbit / cleanup swoosh -->
+    <path
+        android:fillColor="#FFD96B"
+        android:pathData="M30,73 C36,83 53,88 69,81 C77,77 82,72 85,67 C82,77 75,84 66,88 C49,95 31,88 27,77 C26,74 27,72 30,73 Z" />
+
+    <!-- sparkles -->
+    <path
+        android:fillColor="#FFF3B0"
+        android:pathData="M80,65 L83,71 L89,74 L83,77 L80,84 L77,77 L71,74 L77,71 Z" />
+    <path
+        android:fillColor="#FFE27A"
+        android:pathData="M72,69 L74,72 L77,74 L74,76 L72,80 L70,76 L67,74 L70,72 Z" />
+</vector>

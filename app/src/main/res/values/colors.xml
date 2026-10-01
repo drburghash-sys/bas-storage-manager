@@ -6,4 +6,6 @@
     <color name="bas_text">#17211C</color>
     <color name="bas_muted">#66736D</color>
     <color name="bas_danger">#B3261E</color>
+    <color name="launcher_emerald">#063D31</color>
+    <color name="launcher_gold">#E9C45E</color>
 </resources>
