@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "BASStorageManager"
+rootProject.name = "BASGooglePhotos"
 include(":app")
