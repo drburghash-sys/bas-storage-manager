@@ -60,6 +60,21 @@ class MainActivity : Activity() {
         status = cardText("لم يبدأ الفحص بعد")
         root.addView(status)
 
+        root.addView(sectionTitle("تنظيف Google Photos السحابي"))
+        root.addView(button("فتح الصور والفيديوهات الكبيرة — حذف حقيقي من Google") {
+            startActivity(Intent(this, PhotosCleanupActivity::class.java))
+        })
+        root.addView(button("اختيار تطبيق فتح صفحة تنظيف Google") {
+            startActivity(Intent(this, PhotosCleanupActivity::class.java).apply {
+                putExtra(PhotosCleanupActivity.EXTRA_CHOOSE_ROUTE, true)
+            })
+        })
+        root.addView(cardText(
+            "تفتح هذه الأزرار مدير التخزين الرسمي لدى Google. " +
+            "الحذف يتم في حساب Google Photos، وليس مجرد حذف نسخة الهاتف. " +
+            "كما ستظهر أيقونة مستقلة باسم «تنظيف صور Google» يمكنك وضعها على الشاشة الرئيسية."
+        ))
+
         root.addView(sectionTitle("التخزين المحلي"))
         root.addView(button("منح وصول كامل للملفات") { openAllFilesAccess() })
         root.addView(button("فحص الجهاز الآن") { runScan() })
