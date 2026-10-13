@@ -24,6 +24,18 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- Independent launcher icon for the actual Google cloud cleanup UI. -->
+        <activity
+            android:name=".PhotosCleanupActivity"
+            android:exported="true"
+            android:label="تنظيف صور Google"
+            android:icon="@drawable/ic_photos_cleanup">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ReviewActivity"
             android:exported="false" />
